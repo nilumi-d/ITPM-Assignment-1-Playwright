@@ -45,22 +45,65 @@ test.describe("SwiftTranslator - Automated Test Cases", () => {
       await expect(outputBox).toBeVisible({ timeout: 30000 });
 
       // Capture output BEFORE typing (so we can detect change)
-      const before = (await outputBox.innerText().catch(() => "")).trim();
+      const before = (await outputBox.textContent().catch(() => "")).trim();
 
       //  Clear and type input
       await inputBox.fill("");
       await inputBox.type(tc.input, { delay: 30 });
 
-      //  Wait until output changes and becomes non-empty
-      await expect.poll(
-        async () => {
-          const txt = (await outputBox.innerText().catch(() => "")).trim();
-          return txt;
-        },
-        { timeout: 30000 }
-      ).not.toBe(before);
 
-      const actual = (await outputBox.innerText()).trim();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      //  Wait until output changes and becomes non-empty
+      // await expect.poll(
+      //   async () => {
+      //     const txt = (await outputBox.innerText().catch(() => "")).trim();
+      //     return txt;
+      //   },
+      //   { timeout: 30000 }
+      // ).not.toBe(before);
+
+      await expect.poll(
+  async () => {
+    const txt = (await outputBox.textContent().catch(() => "")).trim();
+    return txt;
+  },
+  { timeout: 30000 }
+).toMatch(/\S+/); // means: output has at least 1 character
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      const actual = ((await outputBox.textContent()) || "").trim();
+
 
       console.log(`\n${tc.id}\nINPUT: ${tc.input}\nACTUAL OUTPUT: ${actual}\n`);
 
